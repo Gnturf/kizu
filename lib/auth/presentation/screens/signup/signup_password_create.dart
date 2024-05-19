@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kizu/auth/data/models/user_params.dart';
 import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
+import 'package:kizu/auth/presentation/components/icon_text_button.dart';
 import 'package:kizu/auth/presentation/components/signup/password_insert.dart';
 import 'package:kizu/auth/presentation/components/signup/single_password_rules.dart';
 import 'package:kizu/auth/presentation/constant/password_create_screen.const.dart';
 import 'package:kizu/auth/presentation/screens/signup/signup_profile_making.dart';
-import 'package:kizu/welcome/components/icon_text_button.dart';
 
 class PasswordCreateScreen extends StatefulWidget {
   final UserParams userParams;

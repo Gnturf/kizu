@@ -12,7 +12,6 @@ class RegisterUser {
     UserParams userParams,
     OAuthCredential oAuthCredential,
   ) async {
-    return await userRepository.registerUser(
-        user: userParams, oAuthCredential: oAuthCredential);
+    return await userRepository.registerUser(user: userParams);
   }
 }

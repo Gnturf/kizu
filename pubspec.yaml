@@ -44,6 +44,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   connectivity_plus: ^6.0.3
 
+  firebase_auth_platform_interface: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

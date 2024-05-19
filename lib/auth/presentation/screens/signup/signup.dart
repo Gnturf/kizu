@@ -3,17 +3,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kizu/auth/data/models/user_params.dart';
 import 'package:kizu/auth/presentation/components/connection/connection_snack_bar.dart';
 import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
+import 'package:kizu/auth/presentation/components/icon_text_button.dart';
 import 'package:kizu/auth/presentation/components/signup/country_select.dart';
 import 'package:kizu/auth/presentation/provider/user_provider.dart';
 import 'package:kizu/auth/presentation/screens/signup/signup_password_create.dart';
 import 'package:kizu/core/connection_status.dart';
-import 'package:kizu/welcome/components/icon_text_button.dart';
 
-class SignupScreen extends ConsumerWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends ConsumerState<SignupScreen> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
     final connectionStatus = ref.watch(connectionStatusProvider);
 
     return Scaffold(
@@ -54,33 +61,44 @@ class SignupScreen extends ConsumerWidget {
             IconTextButton.inverted(
               label: "Verify with Google",
               icon: Icons.abc,
-              onPressed: () async {
-                // Checking if there was connection
-                if (connectionStatus == ConnectionStatus.connected) {
-                  // Getting OAuthCredential
-                  final oAuthCredential =
-                      await ref.watch(userProvider).getOAuthCredential();
+              isLoading: isLoading,
+              onPressed: isLoading
+                  ? () {}
+                  : () async {
+                      // Checking if there was connection
+                      if (connectionStatus == ConnectionStatus.connected) {
+                        setState(() {
+                          isLoading = true;
+                        });
 
-                  // Creating the userParams
-                  final userParams = UserParams(
-                    oAuthCredential: oAuthCredential,
-                  );
+                        // Getting OAuthCredential
+                        final oAuthCredential =
+                            await ref.watch(userProvider).getOAuthCredential();
 
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return PasswordCreateScreen(
-                          userParams: userParams,
+                        setState(() {
+                          isLoading = false;
+                        });
+
+                        // Creating the userParams
+                        final userParams = UserParams(
+                          oAuthCredential: oAuthCredential,
                         );
-                      },
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    connectionSnackBar(context),
-                  );
-                }
-              },
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PasswordCreateScreen(
+                                userParams: userParams,
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          connectionSnackBar(context),
+                        );
+                      }
+                    },
             )
           ],
         ),

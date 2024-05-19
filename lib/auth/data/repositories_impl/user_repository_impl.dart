@@ -14,16 +14,21 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<UserEntity> registerUser({
     required UserParams user,
-    required OAuthCredential oAuthCredential,
   }) async {
     final gUserCredential =
-        await firebaseDataSource.registerToFirebase(oAuthCredential);
+        await firebaseDataSource.registerToFirebase(user.oAuthCredential);
     return UserEntity(
       displayName: gUserCredential.user!.email!,
       email: gUserCredential.user!.email!,
     );
   }
 
+  @override
+  Future<void> signOutUser() async {
+    await firebaseDataSource.signOutWithGoogle();
+  }
+
+  // Affecting firebase only
   @override
   Future<OAuthCredential> creatingOAuthCredential() async {
     return await firebaseDataSource.creatingGoogleOAuthCred();

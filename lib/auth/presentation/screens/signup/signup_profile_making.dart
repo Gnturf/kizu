@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kizu/auth/data/models/user_params.dart';
 import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
-import 'package:kizu/welcome/components/icon_text_button.dart';
+import 'package:kizu/auth/presentation/components/icon_text_button.dart';
+import 'package:kizu/auth/presentation/provider/user_provider.dart';
 
 class ProfileMakingScreen extends ConsumerStatefulWidget {
   final UserParams userParams;
@@ -20,6 +21,7 @@ class ProfileMakingScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileMakingScreenState extends ConsumerState<ProfileMakingScreen> {
+  bool isLoading = false;
   File? selectedImage;
   String? errorText;
 
@@ -112,8 +114,20 @@ class _ProfileMakingScreenState extends ConsumerState<ProfileMakingScreen> {
             IconTextButton(
               // OVER HERE!!!
               label: "Create your account",
-              onPressed: () {
+              isLoading: isLoading,
+              onPressed: () async {
                 widget.userParams.displayName = _controller.text;
+                setState(() {
+                  isLoading = true;
+                });
+                await ref.watch(userProvider).registerUser(
+                      userParams: widget.userParams,
+                    );
+                setState(() {
+                  isLoading = false;
+                });
+
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
             )
           ],

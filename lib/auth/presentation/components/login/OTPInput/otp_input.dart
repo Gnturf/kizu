@@ -21,12 +21,12 @@ class _OTPInputState extends State<OTPInput> {
       textDirection: TextDirection.ltr,
     )..layout();
 
-    final _focusNodeOTP1 = FocusNode();
-    final _focusNodeOTP2 = FocusNode();
-    final _focusNodeOTP3 = FocusNode();
-    final _focusNodeOTP4 = FocusNode();
-    final _focusNodeOTP5 = FocusNode();
-    final _focusNodeOTP6 = FocusNode();
+    final focusNodeOTP1 = FocusNode();
+    final focusNodeOTP2 = FocusNode();
+    final focusNodeOTP3 = FocusNode();
+    final focusNodeOTP4 = FocusNode();
+    final focusNodeOTP5 = FocusNode();
+    final focusNodeOTP6 = FocusNode();
 
     return SizedBox(
       width: (otpNumberDimension.width + 8) * 6 + (14 * 5),
@@ -35,32 +35,32 @@ class _OTPInputState extends State<OTPInput> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             OTPSingleTextField(
-              focusNode: _focusNodeOTP1,
-              nextNode: _focusNodeOTP2,
+              focusNode: focusNodeOTP1,
+              nextNode: focusNodeOTP2,
             ),
             OTPSingleTextField(
-              focusNode: _focusNodeOTP2,
-              prevNode: _focusNodeOTP1,
-              nextNode: _focusNodeOTP3,
+              focusNode: focusNodeOTP2,
+              prevNode: focusNodeOTP1,
+              nextNode: focusNodeOTP3,
             ),
             OTPSingleTextField(
-              focusNode: _focusNodeOTP3,
-              prevNode: _focusNodeOTP2,
-              nextNode: _focusNodeOTP4,
+              focusNode: focusNodeOTP3,
+              prevNode: focusNodeOTP2,
+              nextNode: focusNodeOTP4,
             ),
             OTPSingleTextField(
-              focusNode: _focusNodeOTP4,
-              prevNode: _focusNodeOTP3,
-              nextNode: _focusNodeOTP5,
+              focusNode: focusNodeOTP4,
+              prevNode: focusNodeOTP3,
+              nextNode: focusNodeOTP5,
             ),
             OTPSingleTextField(
-              focusNode: _focusNodeOTP5,
-              prevNode: _focusNodeOTP4,
-              nextNode: _focusNodeOTP6,
+              focusNode: focusNodeOTP5,
+              prevNode: focusNodeOTP4,
+              nextNode: focusNodeOTP6,
             ),
             OTPSingleTextField(
-              focusNode: _focusNodeOTP6,
-              prevNode: _focusNodeOTP5,
+              focusNode: focusNodeOTP6,
+              prevNode: focusNodeOTP5,
             ),
           ],
         ),

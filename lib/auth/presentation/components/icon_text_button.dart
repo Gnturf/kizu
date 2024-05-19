@@ -8,6 +8,7 @@ class IconTextButton extends StatelessWidget {
     this.icon,
     this.isInverted = false,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   const IconTextButton.inverted({
@@ -16,11 +17,13 @@ class IconTextButton extends StatelessWidget {
     this.icon,
     this.isInverted = true,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   final String label;
   final IconData? icon;
   final bool isInverted;
+  final bool isLoading;
   final void Function() onPressed;
 
   @override
@@ -45,30 +48,44 @@ class IconTextButton extends StatelessWidget {
       onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          icon != null
-              ? Icon(
-                  icon,
-                  color: isInverted
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.onPrimary,
+        children: isLoading
+            ? [
+                Center(
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      color: isInverted
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
                 )
-              : Container(),
-          SizedBox(
-            width: icon != null ? 10 : 0,
-          ),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  fontFamily: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w500,
-                  ).fontFamily,
-                  color: isInverted
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.onPrimary,
+              ]
+            : [
+                icon != null
+                    ? Icon(
+                        icon,
+                        color: isInverted
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.onPrimary,
+                      )
+                    : Container(),
+                SizedBox(
+                  width: icon != null ? 10 : 0,
                 ),
-          ),
-        ],
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontFamily: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w500,
+                        ).fontFamily,
+                        color: isInverted
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
+              ],
       ),
     );
   }
