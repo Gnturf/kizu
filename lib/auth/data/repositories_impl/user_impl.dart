@@ -5,5 +5,7 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl();
 
   @override
-  void registerUser({required User user}) {}
+  void registerUser({
+    required User user,
+  }) {}
 }
