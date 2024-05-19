@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/auth/components/display_subtitle_text.dart';
-import 'package:kizu/auth/components/icon_text_button.dart';
+import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
+import 'package:kizu/auth/presentation/components/icon_text_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

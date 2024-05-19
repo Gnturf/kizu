@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/auth/components/display_subtitle_text.dart';
-import 'package:kizu/auth/components/signup/password_insert.dart';
-import 'package:kizu/auth/components/signup/single_password_rules.dart';
-import 'package:kizu/auth/constant/password_create_screen.const.dart';
-import 'package:kizu/auth/screens/signup/signup_profile_making.dart';
+import 'package:kizu/auth/data/models/user_params.dart';
+import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
+import 'package:kizu/auth/presentation/components/signup/password_insert.dart';
+import 'package:kizu/auth/presentation/components/signup/single_password_rules.dart';
+import 'package:kizu/auth/presentation/constant/password_create_screen.const.dart';
+import 'package:kizu/auth/presentation/screens/signup/signup_profile_making.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
 
 class PasswordCreateScreen extends StatefulWidget {
+  final UserParams userParams;
+
   const PasswordCreateScreen({
     super.key,
+    required this.userParams,
   });
 
   @override
@@ -165,10 +169,16 @@ class _PasswordCreateScreenState extends State<PasswordCreateScreen> {
                         rePasswordErrorText = null;
                       });
 
+                      // Set the password in the userParams
+                      widget.userParams.password = passwordController.text;
+
+                      // Go To The Next Page
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
-                            return const ProfileMakingScreen();
+                            return ProfileMakingScreen(
+                              userParams: widget.userParams,
+                            );
                           },
                         ),
                       );

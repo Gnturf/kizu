@@ -1,15 +1,13 @@
-class User {
+class UserEntity {
   final String displayName;
   final String? statusMessage;
-  final String? email;
-  final String? password;
+  final String email;
   final String? contactID;
 
-  User({
+  UserEntity({
     required this.displayName,
     this.statusMessage,
     required this.email,
-    required this.password,
     this.contactID,
   });
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/auth/components/login/OTPInput/otp_single_text_field.dart';
+import 'package:kizu/auth/presentation/components/login/OTPInput/otp_single_text_field.dart';
 
 class OTPInput extends StatefulWidget {
   const OTPInput({super.key});

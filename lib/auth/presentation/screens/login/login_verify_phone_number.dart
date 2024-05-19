@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kizu/auth/components/display_subtitle_text.dart';
-import 'package:kizu/auth/components/login/OTPInput/otp_input.dart';
-import 'package:kizu/auth/components/login/resend_sms_verification.dart';
+import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
+import 'package:kizu/auth/presentation/components/login/OTPInput/otp_input.dart';
+import 'package:kizu/auth/presentation/components/login/resend_sms_verification.dart';
 
 class VerifyPhoneNumberScreen extends StatelessWidget {
   const VerifyPhoneNumberScreen({super.key});

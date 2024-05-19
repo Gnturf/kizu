@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/auth/screens/login/login.dart';
-import 'package:kizu/auth/screens/signup/signup.dart';
+import 'package:kizu/auth/presentation/screens/login/login.dart';
+import 'package:kizu/auth/presentation/screens/signup/signup.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
 
 class WelcomeScreen extends StatelessWidget {

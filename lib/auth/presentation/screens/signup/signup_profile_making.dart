@@ -1,19 +1,25 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:kizu/auth/components/display_subtitle_text.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kizu/auth/data/models/user_params.dart';
+import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
 
-class ProfileMakingScreen extends StatefulWidget {
+class ProfileMakingScreen extends ConsumerStatefulWidget {
+  final UserParams userParams;
+
   const ProfileMakingScreen({
     super.key,
+    required this.userParams,
   });
 
   @override
-  State<ProfileMakingScreen> createState() => _ProfileMakingScreenState();
+  ConsumerState<ProfileMakingScreen> createState() =>
+      _ProfileMakingScreenState();
 }
 
-class _ProfileMakingScreenState extends State<ProfileMakingScreen> {
+class _ProfileMakingScreenState extends ConsumerState<ProfileMakingScreen> {
   File? selectedImage;
   String? errorText;
 
@@ -106,7 +112,9 @@ class _ProfileMakingScreenState extends State<ProfileMakingScreen> {
             IconTextButton(
               // OVER HERE!!!
               label: "Create your account",
-              onPressed: () {},
+              onPressed: () {
+                widget.userParams.displayName = _controller.text;
+              },
             )
           ],
         ),

@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kizu/auth/components/display_subtitle_text.dart';
-import 'package:kizu/auth/components/icon_text_button.dart';
-import 'package:kizu/auth/components/login/phone_number_input.dart';
-import 'package:kizu/auth/screens/login/login_verify_phone_number.dart';
+import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
+import 'package:kizu/auth/presentation/components/icon_text_button.dart';
+import 'package:kizu/auth/presentation/components/login/phone_number_input.dart';
+import 'package:kizu/auth/presentation/screens/login/login_verify_phone_number.dart';
 
 class LoginPhoneNumberScreen extends StatelessWidget {
   const LoginPhoneNumberScreen({super.key});

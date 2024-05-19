@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kizu/auth/components/connection/connection_snack_bar.dart';
-import 'package:kizu/auth/components/display_subtitle_text.dart';
-import 'package:kizu/auth/components/signup/country_select.dart';
-import 'package:kizu/auth/screens/signup/signup_password_create.dart';
-import 'package:kizu/utils/connection_status.dart';
+import 'package:kizu/auth/data/models/user_params.dart';
+import 'package:kizu/auth/presentation/components/connection/connection_snack_bar.dart';
+import 'package:kizu/auth/presentation/components/display_subtitle_text.dart';
+import 'package:kizu/auth/presentation/components/signup/country_select.dart';
+import 'package:kizu/auth/presentation/provider/user_provider.dart';
+import 'package:kizu/auth/presentation/screens/signup/signup_password_create.dart';
+import 'package:kizu/core/connection_status.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
 
 class SignupScreen extends ConsumerWidget {
@@ -52,12 +54,24 @@ class SignupScreen extends ConsumerWidget {
             IconTextButton.inverted(
               label: "Verify with Google",
               icon: Icons.abc,
-              onPressed: () {
+              onPressed: () async {
+                // Checking if there was connection
                 if (connectionStatus == ConnectionStatus.connected) {
+                  // Getting OAuthCredential
+                  final oAuthCredential =
+                      await ref.watch(userProvider).getOAuthCredential();
+
+                  // Creating the userParams
+                  final userParams = UserParams(
+                    oAuthCredential: oAuthCredential,
+                  );
+
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
-                        return const PasswordCreateScreen();
+                        return PasswordCreateScreen(
+                          userParams: userParams,
+                        );
                       },
                     ),
                   );
