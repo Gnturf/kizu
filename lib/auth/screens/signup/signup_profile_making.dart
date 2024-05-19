@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:kizu/auth/components/display_subtitle_text.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
 
@@ -16,17 +15,10 @@ class ProfileMakingScreen extends StatefulWidget {
 
 class _ProfileMakingScreenState extends State<ProfileMakingScreen> {
   File? selectedImage;
-  TextEditingController _controller = TextEditingController();
   String? errorText;
 
-  Future<void> _pickImageFromGallery() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      selectedImage = File(returnedImage!.path);
-    });
-  }
+  // Profile Name Controller
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,29 +58,28 @@ class _ProfileMakingScreenState extends State<ProfileMakingScreen> {
             Align(
               alignment: Alignment.center,
               child: InkWell(
-                onTap: () {
-                  _pickImageFromGallery();
-                },
+                onTap: () {},
                 child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  width: 116,
-                  height: 116,
-                  decoration: BoxDecoration(
-                    color: Colors.white30,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: selectedImage != null
-                      ? Image.file(
-                          selectedImage!,
-                          fit: BoxFit.cover,
-                        )
-                      : const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Pick Your Image"),
-                          ],
-                        ),
-                ),
+                    clipBehavior: Clip.hardEdge,
+                    width: 116,
+                    height: 116,
+                    decoration: BoxDecoration(
+                      color: Colors.white30,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: selectedImage != null
+                        ? Image.file(
+                            selectedImage!,
+                            fit: BoxFit.cover,
+                          )
+                        : Center(
+                            child: Icon(
+                              Icons.camera_alt_rounded,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                            ),
+                          )),
               ),
             ),
             const SizedBox(

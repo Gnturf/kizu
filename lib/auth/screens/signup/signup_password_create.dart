@@ -2,17 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kizu/auth/components/display_subtitle_text.dart';
 import 'package:kizu/auth/components/signup/password_insert.dart';
 import 'package:kizu/auth/components/signup/single_password_rules.dart';
+import 'package:kizu/auth/constant/password_create_screen.const.dart';
 import 'package:kizu/auth/screens/signup/signup_profile_making.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
-
-enum PasswordCheck {
-  missing8Character,
-  missingAtleastOneUppercase,
-  missingLowercase,
-  missingASymbol,
-  missingANumber,
-  hasAll
-}
 
 class PasswordCreateScreen extends StatefulWidget {
   const PasswordCreateScreen({
@@ -56,36 +48,6 @@ class _PasswordCreateScreenState extends State<PasswordCreateScreen> {
     }
 
     return true;
-  }
-
-  PasswordCheck passwordCheck(String password) {
-    // Check if the password has at least 8 characters
-    if (password.length < 8) {
-      return PasswordCheck.missing8Character;
-    }
-
-    // Check if the password has at least one uppercase letter
-    if (!password.contains(RegExp(r'[A-Z]'))) {
-      return PasswordCheck.missingAtleastOneUppercase;
-    }
-
-    // Check if the password has at least one lowercase letter
-    if (!password.contains(RegExp(r'[a-z]'))) {
-      return PasswordCheck.missingLowercase;
-    }
-
-    // Check if the password has at least one symbol
-    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return PasswordCheck.missingASymbol;
-    }
-
-    // Check if the password has at least one number
-    if (!password.contains(RegExp(r'[0-9]'))) {
-      return PasswordCheck.missingANumber;
-    }
-
-    // If all conditions are met, return true
-    return PasswordCheck.hasAll;
   }
 
   @override
@@ -196,6 +158,7 @@ class _PasswordCreateScreenState extends State<PasswordCreateScreen> {
                             "Password must have atleast a number";
                       });
                       break;
+                    // If all check was passed
                     default:
                       setState(() {
                         passwordErrorText = null;

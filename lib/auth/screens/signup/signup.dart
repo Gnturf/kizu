@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kizu/auth/components/display_subtitle_text.dart';
 import 'package:kizu/auth/components/signup/country_select.dart';
+import 'package:kizu/auth/screens/signup/signup_password_create.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -46,7 +47,15 @@ class SignupScreen extends StatelessWidget {
             IconTextButton.inverted(
               label: "Verify with Google",
               icon: Icons.abc,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const PasswordCreateScreen();
+                    },
+                  ),
+                );
+              },
             )
           ],
         ),
