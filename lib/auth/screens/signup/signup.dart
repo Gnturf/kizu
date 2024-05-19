@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kizu/auth/components/connection/connection_snack_bar.dart';
 import 'package:kizu/auth/components/display_subtitle_text.dart';
 import 'package:kizu/auth/components/signup/country_select.dart';
 import 'package:kizu/auth/screens/signup/signup_password_create.dart';
+import 'package:kizu/utils/connection_status.dart';
 import 'package:kizu/welcome/components/icon_text_button.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends ConsumerWidget {
   const SignupScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final connectionStatus = ref.watch(connectionStatusProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -48,13 +53,19 @@ class SignupScreen extends StatelessWidget {
               label: "Verify with Google",
               icon: Icons.abc,
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const PasswordCreateScreen();
-                    },
-                  ),
-                );
+                if (connectionStatus == ConnectionStatus.connected) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const PasswordCreateScreen();
+                      },
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    connectionSnackBar(context),
+                  );
+                }
               },
             )
           ],
