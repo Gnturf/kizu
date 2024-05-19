@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "342678776011",
+    "project_id": "kizu-97c56",
+    "storage_bucket": "kizu-97c56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342678776011:android:119c8a9c97b01525dd134e",
+        "android_client_info": {
+          "package_name": "com.example.kizu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI-Hu55eHd6_a37bUNEHzH6m0YOyXKeK8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
