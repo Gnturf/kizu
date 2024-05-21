@@ -45,6 +45,8 @@ dependencies:
   connectivity_plus: ^6.0.3
 
   firebase_auth_platform_interface: any
+  shared_preferences: ^2.2.3
+  dartz: ^0.10.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
