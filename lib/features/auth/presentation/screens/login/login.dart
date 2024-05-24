@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kizu/core/connection_status.dart';
+import 'package:kizu/core/errors/failure.dart';
 import 'package:kizu/features/auth/presentation/components/display_subtitle_text.dart';
 import 'package:kizu/features/auth/presentation/components/icon_text_button.dart';
+import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
+import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  bool isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
+    final connectionStatus = ref.watch(connectionStatusProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -38,28 +52,65 @@ class LoginScreen extends StatelessWidget {
               subtitleText: "How do you want to proceed?",
             ),
             const Spacer(),
-            // IconTextButton(
-            //   label: "Proceed with Phone Number",
-            //   icon: Icons.phone,
-            //   onPressed: () {
-            //     Navigator.of(context).push(
-            //       MaterialPageRoute(
-            //         builder: (context) => const LoginPhoneNumberScreen(),
-            //       ),
-            //     );
-            //   },
-            // ),
-            // const SizedBox(
-            //   height: 10,
-            // ),
             IconTextButton.inverted(
               label: "Proceed with Google",
               icon: Icons.abc,
-              onPressed: () {},
+              isLoading: isLoading,
+              onPressed: () async {
+                if (isLoading) return;
+
+                if (connectionStatus == ConnectionStatus.disconnected) {
+                  // If internet connection was not found
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    customSnackBar(
+                      context,
+                      "Please Check Your Internet Connection",
+                      Colors.red,
+                    ),
+                  );
+
+                  return;
+                }
+
+                setState(() {
+                  isLoading = true;
+                });
+
+                final failureOrOAuthCredential =
+                    await ref.read(userProvider).createOAuthCredential();
+                failureOrOAuthCredential.fold(
+                  (newFailure) {
+                    handleFailure(newFailure);
+                  },
+                  (oAuthCredential) async {
+                    await ref
+                        .read(userProvider)
+                        .registerToFirebase(oAuthCredential: oAuthCredential);
+
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    if (!mounted) return;
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                );
+              },
             )
           ],
         ),
       ),
     );
+  }
+
+  // Handle Anything That Was fail
+  void handleFailure(Failure newFailure) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      customSnackBar(context, newFailure.errorMessage, Colors.red),
+    );
+
+    setState(() {
+      isLoading = false;
+    });
   }
 }

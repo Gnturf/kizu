@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kizu/core/errors/failure.dart';
+import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
 import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
+import 'package:kizu/features/auth/presentation/screens/loading.dart';
 import 'package:kizu/features/chat/screens/temp_chat.dart';
 import 'package:kizu/features/welcome/screens/welcome.dart';
 
@@ -18,22 +19,20 @@ class AuthScreen extends ConsumerWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             User? user = snapshot.data;
             if (user == null) {
-              ref.watch(userProvider).cleanSession();
-
               return const WelcomeScreen();
-            }
+            } else {
+              if (ref.watch(authModeProvider).authMode != AuthMode.none) {
+                return LoadingScreen(
+                    authMode: ref.read(authModeProvider).authMode);
+              }
 
-            try {
-              ref.read(userProvider).eitherFailureOrUser();
-              // ignore: empty_catches
-            } on CacheFailure {}
-            return const TempChat();
-          }
-          return const Scaffold(
-            body: Center(
+              return const TempChat();
+            }
+          } else {
+            return const Center(
               child: CircularProgressIndicator(),
-            ),
-          );
+            );
+          }
         },
       ),
     );

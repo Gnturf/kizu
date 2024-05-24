@@ -9,6 +9,8 @@ enum ConnectionStatus {
 }
 
 class ConnectionStatusNotifier extends StateNotifier<ConnectionStatus> {
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
+
   ConnectionStatusNotifier() : super(ConnectionStatus.connected) {
     _subscription = Connectivity()
         .onConnectivityChanged
@@ -22,8 +24,6 @@ class ConnectionStatusNotifier extends StateNotifier<ConnectionStatus> {
       }
     });
   }
-
-  StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   @override
   void dispose() {

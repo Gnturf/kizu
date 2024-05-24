@@ -2,17 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kizu/core/params/user_params.dart';
 import 'package:kizu/features/auth/presentation/components/display_subtitle_text.dart';
 import 'package:kizu/features/auth/presentation/components/icon_text_button.dart';
+import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
+import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
+import 'package:kizu/features/auth/presentation/provider/user_params_provider.dart';
 import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
 
 class ProfileMakingScreen extends ConsumerStatefulWidget {
-  final UserParams userParams;
-
   const ProfileMakingScreen({
     super.key,
-    required this.userParams,
   });
 
   @override
@@ -112,23 +111,83 @@ class _ProfileMakingScreenState extends ConsumerState<ProfileMakingScreen> {
             ),
             const Spacer(),
             IconTextButton(
-              // OVER HERE!!!
               label: "Create your account",
               isLoading: isLoading,
-              onPressed: () async {
-                widget.userParams.displayName = _controller.text;
-                setState(() {
-                  isLoading = true;
-                });
-                await ref.watch(userProvider).registerUser(
-                      userParams: widget.userParams,
-                    );
-                setState(() {
-                  isLoading = false;
-                });
+              onPressed: isLoading
+                  ? () {}
+                  : () async {
+                      ref
+                          .read(userParamsProvider)
+                          .setDisplayName(_controller.text);
 
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+                      /// Set AuthMode state to AuthMode.register
+                      ref.read(authModeProvider).setAuthMode(AuthMode.signup);
+
+                      ScaffoldMessenger.of(context).showSnackBar(customSnackBar(
+                        context,
+                        "Sucecss set the AuthMode",
+                        Colors.green,
+                      ));
+
+                      // Register To Firebase
+                      /// Get the oAuthCredential from UserParams provider
+                      final oAuthCredential = ref
+                          .read(userParamsProvider)
+                          .userParams
+                          .oAuthCredential;
+
+                      /// Check if the oAuthCredential was null
+                      if (oAuthCredential == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          customSnackBar(
+                            context,
+                            "OAuth credential was null",
+                            Colors.red,
+                          ),
+                        );
+
+                        return;
+                      }
+
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      /// Register user to firebase
+                      final eitherFailureOrUserCredential =
+                          await ref.read(userProvider).registerToFirebase(
+                                oAuthCredential: oAuthCredential,
+                              );
+
+                      setState(() {
+                        isLoading = false;
+                      });
+
+                      eitherFailureOrUserCredential.fold(
+                        (newFailure) {
+                          /// If register to firebase failed
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            customSnackBar(
+                              context,
+                              newFailure.errorMessage,
+                              Colors.red,
+                            ),
+                          );
+                        },
+                        (userCredential) {
+                          /// If register to firebase success
+                          ref
+                              .read(userParamsProvider)
+                              .setUserCredential(userCredential);
+                        },
+                      );
+
+                      /// Navigate to appropiate screen
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+
+                      print(
+                          ref.read(userParamsProvider).userParams.displayName);
+                    },
             )
           ],
         ),

@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/core/params/user_params.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kizu/features/auth/presentation/components/display_subtitle_text.dart';
 import 'package:kizu/features/auth/presentation/components/icon_text_button.dart';
 import 'package:kizu/features/auth/presentation/components/signup/password_insert.dart';
 import 'package:kizu/features/auth/presentation/components/signup/single_password_rules.dart';
 import 'package:kizu/features/auth/presentation/constant/password_create_screen.const.dart';
+import 'package:kizu/features/auth/presentation/provider/user_params_provider.dart';
 import 'package:kizu/features/auth/presentation/screens/signup/signup_profile_making.dart';
 
-class PasswordCreateScreen extends StatefulWidget {
-  final UserParams userParams;
-
+class PasswordCreateScreen extends ConsumerStatefulWidget {
   const PasswordCreateScreen({
     super.key,
-    required this.userParams,
   });
 
   @override
-  State<PasswordCreateScreen> createState() => _PasswordCreateScreenState();
+  ConsumerState<PasswordCreateScreen> createState() =>
+      _PasswordCreateScreenState();
 }
 
-class _PasswordCreateScreenState extends State<PasswordCreateScreen> {
+class _PasswordCreateScreenState extends ConsumerState<PasswordCreateScreen> {
   final passwordController = TextEditingController();
   final rePasswordController = TextEditingController();
 
@@ -170,15 +169,15 @@ class _PasswordCreateScreenState extends State<PasswordCreateScreen> {
                       });
 
                       // Set the password in the userParams
-                      widget.userParams.password = passwordController.text;
+                      ref
+                          .read(userParamsProvider)
+                          .setPassword(passwordController.text);
 
                       // Go To The Next Page
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
-                            return ProfileMakingScreen(
-                              userParams: widget.userParams,
-                            );
+                            return const ProfileMakingScreen();
                           },
                         ),
                       );

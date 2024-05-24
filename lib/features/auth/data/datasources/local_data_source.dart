@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 const storedUser = 'STORED_USER';
 
 abstract class UserLocalDataSources {
-  Future<UserEntity> getUser();
-  Future<void>? storeUser(UserModel userModel);
-  Future<bool> cleanUser();
+  Future<UserEntity> fetchUser();
+  Future<void> cachedUser(UserEntity userEntity);
+  Future<void> cleanCachedUser();
 }
 
 class UserLocalDataSourcesImpl extends UserLocalDataSources {
@@ -21,7 +21,7 @@ class UserLocalDataSourcesImpl extends UserLocalDataSources {
   });
 
   @override
-  Future<UserEntity> getUser() async {
+  Future<UserEntity> fetchUser() async {
     final jsonString = sharedPreferences.getString(storedUser);
 
     if (jsonString != null) {
@@ -36,21 +36,21 @@ class UserLocalDataSourcesImpl extends UserLocalDataSources {
   }
 
   @override
-  Future<void>? storeUser(UserModel? userModel) async {
-    if (userModel != null) {
+  Future<void> cachedUser(UserEntity userEntity) async {
+    try {
       await sharedPreferences.setString(
         storedUser,
-        json.encode(userModel),
+        json.encode(userEntity),
       );
-    } else {
+    } catch (e) {
       throw CacheException();
     }
   }
 
   @override
-  Future<bool> cleanUser() async {
+  Future<void> cleanCachedUser() async {
     try {
-      return await sharedPreferences.remove(storedUser);
+      await sharedPreferences.remove(storedUser);
     } catch (e) {
       throw CacheException();
     }

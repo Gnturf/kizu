@@ -2,13 +2,14 @@ import 'package:kizu/features/auth/business/entity/user_entity.dart';
 import 'package:kizu/core/constant/constants.dart';
 
 class UserModel extends UserEntity {
-  final String uid;
+  final String? password;
 
   UserModel({
-    required this.uid,
+    required super.uid,
     required super.displayName,
     super.statusMessage,
     required super.email,
+    this.password,
     super.contactID,
   });
 
@@ -18,6 +19,7 @@ class UserModel extends UserEntity {
       displayName: json[kDisplayName] as String,
       statusMessage: json[kStatusMessage] as String?,
       email: json[kEmail] as String,
+      password: json[kPassword] as String?,
       contactID: json[kContactID] as String?,
     );
   }
@@ -28,6 +30,7 @@ class UserModel extends UserEntity {
       kDisplayName: displayName,
       kStatusMessage: statusMessage,
       kEmail: email,
+      kPassword: password,
       kContactID: contactID,
     };
   }

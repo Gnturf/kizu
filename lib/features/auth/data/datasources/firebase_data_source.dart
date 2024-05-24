@@ -1,14 +1,24 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kizu/core/errors/exception.dart';
-import 'package:kizu/core/errors/failure.dart';
 
-class FirebaseDataSource {
+abstract class FirebaseDataSource {
+  Future<OAuthCredential> createOAuthCredential();
+  Future<UserCredential> registerOrSignInToFirebase({
+    required OAuthCredential oAuthCredential,
+  });
+  Future<void> cleanSession();
+  String getUserEmail();
+  Future<void> signOut();
+}
+
+class FirebaseDataSourceImpl extends FirebaseDataSource {
   final GoogleSignIn googleSignIn;
 
-  FirebaseDataSource({required this.googleSignIn});
+  FirebaseDataSourceImpl({required this.googleSignIn});
 
-  Future<UserCredential> registerToFirebase() async {
+  @override
+  Future<OAuthCredential> createOAuthCredential() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
@@ -23,25 +33,52 @@ class FirebaseDataSource {
         idToken: googleAuth?.idToken,
       );
 
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on FirebaseAuthException catch (error) {
-      throw ServerException(message: error.message!);
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      throw ServerException(message: e.toString());
     }
   }
 
-  Future<void> cleanCurrentSession() async {
-    if (googleSignIn.currentUser != null) {
-      await googleSignIn.disconnect();
+  @override
+  Future<void> cleanSession() async {
+    try {
+      if (googleSignIn.currentUser != null) {
+        await googleSignIn.disconnect();
+      }
+    } on FirebaseAuthException catch (e) {
+      throw ServerException(message: e.toString());
     }
   }
 
-  Future<void> signOutWithGoogle() async {
+  @override
+  String getUserEmail() {
+    if (googleSignIn.currentUser == null) {
+      throw SystemException(message: "GoogleSignIn.currentUser was null");
+    }
+
+    return googleSignIn.currentUser!.email;
+  }
+
+  @override
+  Future<UserCredential> registerOrSignInToFirebase({
+    required OAuthCredential oAuthCredential,
+  }) async {
+    try {
+      return await FirebaseAuth.instance.signInWithCredential(oAuthCredential);
+    } on FirebaseAuthException catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
     try {
       await googleSignIn.disconnect();
+      print("Success Disconnect");
       await FirebaseAuth.instance.signOut();
-    } on FirebaseAuthException catch (error) {
-      throw ServerFailure(errorMessage: error.message!);
+      print("Success Signout");
+    } catch (e) {
+      throw ServerException(message: e.toString());
     }
   }
 }

@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kizu/core/errors/failure.dart';
 import 'package:kizu/features/auth/business/repository/user_repository.dart';
 
-class RegisterUserToFirebase {
-  final UserRepository userRepository;
+class RegisterToFirebase {
+  UserRepository repository;
 
-  RegisterUserToFirebase({required this.userRepository});
+  RegisterToFirebase({required this.repository});
 
-  Future<Either<Failure, UserCredential>> call() async {
-    return await userRepository.registerToFirebase();
+  Future<Either<Failure, UserCredential>> call(
+      OAuthCredential oAuthCredential) async {
+    return await repository.registerToFirebase(
+      oAuthCredential: oAuthCredential,
+    );
   }
 }

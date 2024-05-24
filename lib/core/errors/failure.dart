@@ -10,3 +10,7 @@ class CacheFailure extends Failure {
 class ServerFailure extends Failure {
   ServerFailure({required super.errorMessage});
 }
+
+class SystemFailure extends Failure {
+  SystemFailure({required super.errorMessage});
+}

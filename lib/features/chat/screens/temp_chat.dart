@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kizu/core/errors/failure.dart';
+import 'package:kizu/features/auth/business/entity/user_entity.dart';
 import 'package:kizu/features/auth/presentation/components/icon_text_button.dart';
 import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
 import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
@@ -16,9 +18,35 @@ class TempChat extends ConsumerStatefulWidget {
 class _TempChatState extends ConsumerState<TempChat> {
   String idToken = "";
   bool isLoading = false;
+
+  @override
+  void initState() {
+    _initFetch();
+    super.initState();
+  }
+
+  void _initFetch() async {
+    if (ref.read(userProvider).userEntity == null) {
+      final fetchResult = await ref.read(userProvider).fetchUser();
+
+      fetchResult.fold(
+        (newFailure) {
+          handleFailure(newFailure);
+        },
+        (_) {},
+      );
+    }
+  }
+
+  void handleFailure(Failure newFailure) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      customSnackBar(context, newFailure.errorMessage, Colors.red),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userData = ref.watch(userProvider).user;
+    UserEntity? userEntity = ref.watch(userProvider).userEntity;
 
     return Scaffold(
       appBar: AppBar(),
@@ -28,13 +56,16 @@ class _TempChatState extends ConsumerState<TempChat> {
             Card(
               color: Colors.black,
               child: Column(
-                children: [
-                  Text(userData!.displayName),
-                  Text(userData.email),
-                  Text(userData.statusMessage ?? ""),
-                  Text(userData.contactID ?? ""),
-                  SelectableText(idToken)
-                ],
+                children: userEntity == null
+                    ? []
+                    : [
+                        Text(userEntity.uid),
+                        Text(userEntity.displayName),
+                        Text(userEntity.email),
+                        Text(
+                            userEntity.statusMessage ?? "Status Message Empty"),
+                        Text(userEntity.contactID ?? "ContactID Empty"),
+                      ],
               ),
             ),
             IconTextButton(
@@ -60,21 +91,17 @@ class _TempChatState extends ConsumerState<TempChat> {
                 setState(() {
                   isLoading = true;
                 });
-                final failureOrSignOut =
-                    await ref.watch(userProvider).signOutUser();
-                setState(() {
-                  isLoading = false;
-                });
 
-                // Check if signOut was success
-                failureOrSignOut.fold(
+                final signOutResult = await ref.read(userProvider).signOut();
+                print("Over Here");
+                signOutResult.fold(
                   (newFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       customSnackBar(
-                          context, newFailure.toString(), Colors.red),
+                          context, newFailure.errorMessage, Colors.red),
                     );
                   },
-                  (success) => null,
+                  (_) {},
                 );
               },
             )
