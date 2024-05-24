@@ -31,11 +31,11 @@ class UserExistDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: onProceed,
-          child: Text("Yes"),
+          child: const Text("Yes"),
         ),
         TextButton(
           onPressed: onCancel,
-          child: Text("No"),
+          child: const Text("No"),
         )
       ],
     );

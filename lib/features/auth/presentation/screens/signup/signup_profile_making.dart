@@ -123,12 +123,6 @@ class _ProfileMakingScreenState extends ConsumerState<ProfileMakingScreen> {
                       /// Set AuthMode state to AuthMode.register
                       ref.read(authModeProvider).setAuthMode(AuthMode.signup);
 
-                      ScaffoldMessenger.of(context).showSnackBar(customSnackBar(
-                        context,
-                        "Sucecss set the AuthMode",
-                        Colors.green,
-                      ));
-
                       // Register To Firebase
                       /// Get the oAuthCredential from UserParams provider
                       final oAuthCredential = ref

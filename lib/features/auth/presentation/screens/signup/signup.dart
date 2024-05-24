@@ -141,6 +141,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           return;
         }
 
+        ref.read(userParamsProvider).setOAuthCredential(oAuthCredential);
+
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
@@ -171,6 +173,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             });
           },
           onProceed: () async {
+            Navigator.pop(context);
             await handleUserExistProceed(oAuthCredential);
           },
         );

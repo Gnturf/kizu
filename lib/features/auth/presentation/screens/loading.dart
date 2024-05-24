@@ -6,7 +6,6 @@ import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack
 import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
 import 'package:kizu/features/auth/presentation/provider/user_params_provider.dart';
 import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
-import 'package:kizu/features/chat/screens/temp_chat.dart';
 
 class LoadingScreen extends ConsumerStatefulWidget {
   final AuthMode authMode;
@@ -140,7 +139,7 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen> {
     return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(
-        child: _isLoading ? CircularProgressIndicator() : SizedBox.shrink(),
+        child: _isLoading ? const CircularProgressIndicator() : const SizedBox.shrink(),
       ),
     );
   }

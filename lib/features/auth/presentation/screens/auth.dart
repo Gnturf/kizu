@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
-import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
 import 'package:kizu/features/auth/presentation/screens/loading.dart';
 import 'package:kizu/features/chat/screens/temp_chat.dart';
 import 'package:kizu/features/welcome/screens/welcome.dart';
