@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kizu/core/errors/failure.dart';
-import 'package:kizu/features/auth/business/entity/user_entity.dart';
+import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
 import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
 import 'package:kizu/features/auth/presentation/provider/user_params_provider.dart';
-import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
+import 'package:kizu/core/provider/user_provider.dart';
 
 class LoadingScreen extends ConsumerStatefulWidget {
   final AuthMode authMode;
@@ -139,7 +139,9 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen> {
     return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(
-        child: _isLoading ? const CircularProgressIndicator() : const SizedBox.shrink(),
+        child: _isLoading
+            ? const CircularProgressIndicator()
+            : const SizedBox.shrink(),
       ),
     );
   }

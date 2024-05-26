@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:kizu/core/errors/failure.dart';
 import 'package:kizu/core/params/user_params.dart';
-import 'package:kizu/features/auth/business/entity/user_entity.dart';
+import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/features/auth/business/repository/user_repository.dart';
 
 class RegisterToRemote {
-  UserRepository repository;
+  AuthUserRepository repository;
 
   RegisterToRemote({required this.repository});
 

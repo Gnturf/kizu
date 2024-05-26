@@ -4,7 +4,7 @@ import 'package:kizu/core/errors/failure.dart';
 import 'package:kizu/features/auth/business/repository/user_repository.dart';
 
 class RegisterToFirebase {
-  UserRepository repository;
+  AuthUserRepository repository;
 
   RegisterToFirebase({required this.repository});
 

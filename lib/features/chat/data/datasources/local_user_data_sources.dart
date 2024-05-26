@@ -8,10 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const storedUser = 'STORED_USER';
 
-class UserLocalDataSourcesImpl implements LocalUserDataSource {
+class LocalUserDataSourcesImpl implements LocalUserDataSource {
   final SharedPreferences sharedPreferences;
 
-  UserLocalDataSourcesImpl({
+  LocalUserDataSourcesImpl({
     required this.sharedPreferences,
   });
 

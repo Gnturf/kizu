@@ -1,4 +1,4 @@
-import 'package:kizu/features/auth/business/entity/user_entity.dart';
+import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/core/constant/constants.dart';
 
 class UserModel extends UserEntity {

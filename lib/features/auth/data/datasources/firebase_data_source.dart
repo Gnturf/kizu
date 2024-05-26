@@ -2,17 +2,16 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kizu/core/errors/exception.dart';
 
-abstract class FirebaseDataSource {
+abstract class FirebaseUserAuthDataSource {
   Future<OAuthCredential> createOAuthCredential();
   Future<UserCredential> registerOrSignInToFirebase({
     required OAuthCredential oAuthCredential,
   });
   Future<void> cleanSession();
   String getUserEmail();
-  Future<void> signOut();
 }
 
-class FirebaseDataSourceImpl extends FirebaseDataSource {
+class FirebaseDataSourceImpl implements FirebaseUserAuthDataSource {
   final GoogleSignIn googleSignIn;
 
   FirebaseDataSourceImpl({required this.googleSignIn});
@@ -66,18 +65,6 @@ class FirebaseDataSourceImpl extends FirebaseDataSource {
     try {
       return await FirebaseAuth.instance.signInWithCredential(oAuthCredential);
     } on FirebaseAuthException catch (e) {
-      throw ServerException(message: e.toString());
-    }
-  }
-
-  @override
-  Future<void> signOut() async {
-    try {
-      await googleSignIn.disconnect();
-      print("Success Disconnect");
-      await FirebaseAuth.instance.signOut();
-      print("Success Signout");
-    } catch (e) {
       throw ServerException(message: e.toString());
     }
   }

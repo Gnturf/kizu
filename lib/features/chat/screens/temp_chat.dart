@@ -2,12 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kizu/core/errors/failure.dart';
-import 'package:kizu/features/auth/business/entity/user_entity.dart';
+import 'package:kizu/core/entity/user_entity.dart';
+import 'package:kizu/core/provider/user_provider.dart';
 import 'package:kizu/features/auth/presentation/components/icon_text_button.dart';
 import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
-import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
 
-// ignore: must_be_immutable
 class TempChat extends ConsumerStatefulWidget {
   const TempChat({super.key});
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kizu/core/connection_status.dart';
+import 'package:kizu/core/provider/connection_status.dart';
 import 'package:kizu/core/errors/failure.dart';
 import 'package:kizu/features/auth/presentation/components/display_subtitle_text.dart';
 import 'package:kizu/features/auth/presentation/components/icon_text_button.dart';
 import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
-import 'package:kizu/features/auth/presentation/provider/user_provider.dart';
+import 'package:kizu/core/provider/user_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});

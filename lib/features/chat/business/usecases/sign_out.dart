@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:kizu/core/errors/failure.dart';
-import 'package:kizu/features/auth/business/repository/user_repository.dart';
+import 'package:kizu/features/chat/business/repository/user_repository.dart';
 
 class SignOut {
-  UserRepository repository;
+  ChatUserRepository repository;
 
   SignOut({required this.repository});
 
