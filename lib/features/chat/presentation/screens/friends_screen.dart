@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/features/chat/presentation/components/widgets/friends_screen/friend_tile.dart';
 
 class FriendsScreen extends StatelessWidget {
   const FriendsScreen({super.key});

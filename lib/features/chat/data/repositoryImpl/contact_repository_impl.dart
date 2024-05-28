@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/core/errors/failure.dart';
-import 'package:kizu/features/chat/business/entity/contact_entity.dart';
 import 'package:kizu/features/chat/business/repository/contact_repository.dart';
 import 'package:kizu/features/chat/data/datasources/remote_contact_data_source.dart';
 
@@ -11,7 +11,7 @@ class ContactRepositoryImpl implements ContactRepository {
   ContactRepositoryImpl({required this.remoteContactDataSource});
 
   @override
-  Future<Either<Failure, List<ContactEntity>>> fetchAllUserContact() async {
+  Future<Either<Failure, List<UserEntity>>> fetchAllUserContact() async {
     try {
       /// Get the id token
       final currentUserFirebaseAuth = FirebaseAuth.instance.currentUser;

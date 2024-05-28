@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kizu/core/entity/user_entity.dart';
 
 class ProfileDialog extends StatelessWidget {
-  const ProfileDialog({super.key});
+  final UserEntity user;
+
+  const ProfileDialog({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +47,11 @@ class ProfileDialog extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "GunturF.",
+                          user.displayName,
                           style: Theme.of(context).textTheme.displaySmall,
                         ),
                         Text(
-                          "Poisonous Muffin",
+                          user.statusMessage ?? "-",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         const SizedBox(

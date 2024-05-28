@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/features/chat/presentation/components/widgets/chats_page/chat_tile/chat_tile.dart';
-import 'package:kizu/features/chat/data/dummy_data/messages_history.dart';
-import 'package:kizu/features/chat/presentation/screens/chat_screen.dart';
 
 class ChatsPage extends StatelessWidget {
   const ChatsPage({super.key});

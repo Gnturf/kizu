@@ -2,13 +2,14 @@ import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/core/constant/constants.dart';
 
 class UserModel extends UserEntity {
+  final String email;
   final String? password;
 
   UserModel({
     required super.uid,
     required super.displayName,
     super.statusMessage,
-    required super.email,
+    required this.email,
     this.password,
     super.contactID,
   });

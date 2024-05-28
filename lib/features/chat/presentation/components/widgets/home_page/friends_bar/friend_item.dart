@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:kizu/features/chat/business/entity/contact_entity.dart';
+import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/features/chat/presentation/components/widgets/profile_dialog/profile_dialog.dart';
 
 class FriendItem extends StatelessWidget {
-  final ContactEntity contactData;
+  final UserEntity contactData;
 
   const FriendItem({
     super.key,
@@ -19,7 +18,9 @@ class FriendItem extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) {
-            return ProfileDialog();
+            return ProfileDialog(
+              user: contactData,
+            );
           },
         );
       },
