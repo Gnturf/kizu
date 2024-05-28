@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
 import 'package:kizu/features/auth/presentation/screens/loading.dart';
-import 'package:kizu/features/chat/screens/temp_chat.dart';
+import 'package:kizu/features/chat/presentation/screens/navigation_screen.dart';
 import 'package:kizu/features/welcome/screens/welcome.dart';
 
 class AuthScreen extends ConsumerWidget {
@@ -25,7 +25,7 @@ class AuthScreen extends ConsumerWidget {
                     authMode: ref.read(authModeProvider).authMode);
               }
 
-              return const TempChat();
+              return const NavigationScreen();
             }
           } else {
             return const Center(

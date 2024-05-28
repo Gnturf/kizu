@@ -26,7 +26,7 @@ import 'package:kizu/features/chat/business/usecases/sign_out.dart';
 import 'package:kizu/features/chat/data/datasources/firebase_user_data_source.dart';
 import 'package:kizu/features/chat/data/datasources/local_user_data_sources.dart';
 import 'package:kizu/features/chat/data/datasources/remote_user_data_sources.dart';
-import 'package:kizu/features/chat/data/repository_impl/user_repository_impl.dart';
+import 'package:kizu/features/chat/data/repositoryImpl/user_repository_impl.dart';
 import 'package:kizu/features/chat/business/usecases/fetch_user.dart';
 
 class UserProvider extends ChangeNotifier {
