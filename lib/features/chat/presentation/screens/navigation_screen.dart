@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kizu/core/provider/user_provider.dart';
-import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
+import 'package:kizu/core/errors/handler/failure_handler.dart';
 import 'package:kizu/features/chat/presentation/components/widgets/navBar/nav_bar.dart';
 import 'package:kizu/features/chat/presentation/components/widgets/navBar/nav_item.dart';
 import 'package:kizu/features/chat/presentation/page/chats_page.dart';
 import 'package:kizu/features/chat/presentation/page/home_page.dart';
-import 'package:kizu/features/chat/presentation/providers/contact_provider.dart';
+import 'package:kizu/features/chat/presentation/provider/contact_provider.dart';
+import 'package:kizu/features/chat/presentation/provider/user_provider.dart';
 
 class NavigationScreen extends ConsumerStatefulWidget {
   const NavigationScreen({super.key});
@@ -25,43 +25,30 @@ class _NavigationScreenState extends ConsumerState<NavigationScreen> {
     super.initState();
   }
 
-  Future<void> _initFetch() async {
-    print("Init Fetch");
-    if (ref.read(userProvider).userEntity == null) {
-      final fetchResult = await ref.read(userProvider).fetchUser();
-      fetchResult.fold(
+  void _initFetch() async {
+    if (ref.read(userProvider).user == null) {
+      final fetchUser = await ref.read(userProvider).fetchUser();
+      fetchUser.fold(
         (newFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            customSnackBar(context, newFailure.errorMessage, Colors.red),
-          );
-
-          print("Failed Fetch User");
+          handleFailure(context, newFailure);
           return;
         },
         (_) {
-          print("Success Fetch User");
+          _tryFetchContacts();
         },
       );
     }
+  }
 
-    print("-------------------------------");
-
-    if (ref.read(contactProvider).contactList == null) {
-      final fetchContact =
-          await ref.read(contactProvider).fetchAllUserContact();
-      fetchContact.fold(
-        (newFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            customSnackBar(context, newFailure.errorMessage, Colors.red),
-          );
-
-          print("Failed Fetch Contact");
-        },
-        (_) {
-          print("Success Fetch Contact");
-        },
-      );
-    }
+  Future<void> _tryFetchContacts() async {
+    final fetchContact = await ref.read(contactProvider).fetchContacts();
+    fetchContact.fold(
+      (newFailure) {
+        handleFailure(context, newFailure);
+        return;
+      },
+      (_) {},
+    );
   }
 
   @override

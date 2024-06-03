@@ -1,12 +1,17 @@
 import 'dart:convert';
 
-import 'package:kizu/core/datasource/local_user_data_source.dart';
 import 'package:kizu/core/errors/exception.dart';
-import 'package:kizu/core/entity/user_entity.dart';
-import 'package:kizu/features/auth/data/models/user_model.dart';
+import 'package:kizu/features/chat/business/entity/user_entity.dart';
+import 'package:kizu/features/chat/data/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const storedUser = 'STORED_USER';
+
+abstract class LocalUserDataSource {
+  Future<UserEntity> fetchUser();
+  Future<void> cachedUser(UserEntity userEntity);
+  Future<void> cleanCachedUser();
+}
 
 class LocalUserDataSourcesImpl implements LocalUserDataSource {
   final SharedPreferences sharedPreferences;
@@ -26,7 +31,7 @@ class LocalUserDataSourcesImpl implements LocalUserDataSource {
         ),
       );
     } else {
-      throw CacheException();
+      throw CacheException(message: 'Local Not Found');
     }
   }
 

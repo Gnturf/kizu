@@ -5,7 +5,7 @@ import 'package:kizu/core/errors/failure.dart';
 import 'package:kizu/features/auth/presentation/components/display_subtitle_text.dart';
 import 'package:kizu/features/auth/presentation/components/icon_text_button.dart';
 import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
-import 'package:kizu/core/provider/user_provider.dart';
+import 'package:kizu/features/auth/presentation/provider/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -77,14 +77,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 });
 
                 final failureOrOAuthCredential =
-                    await ref.read(userProvider).createOAuthCredential();
+                    await ref.read(authProvider).createOAuthCredential();
                 failureOrOAuthCredential.fold(
                   (newFailure) {
                     handleFailure(newFailure);
                   },
                   (oAuthCredential) async {
                     await ref
-                        .read(userProvider)
+                        .read(authProvider)
                         .registerToFirebase(oAuthCredential: oAuthCredential);
 
                     setState(() {

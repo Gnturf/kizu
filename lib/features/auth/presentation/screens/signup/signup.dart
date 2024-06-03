@@ -10,7 +10,7 @@ import 'package:kizu/features/auth/presentation/components/signup/country_select
 import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
 import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
 import 'package:kizu/features/auth/presentation/provider/user_params_provider.dart';
-import 'package:kizu/core/provider/user_provider.dart';
+import 'package:kizu/features/auth/presentation/provider/auth_provider.dart';
 import 'package:kizu/features/auth/presentation/screens/signup/signup_password_create.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
@@ -89,7 +89,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
                 // Try Getting OAuthCredential
                 final eitherFailureOrOAuth =
-                    await ref.watch(userProvider).createOAuthCredential();
+                    await ref.watch(authProvider).createOAuthCredential();
 
                 // Check if getting OAuth Credential was success
                 eitherFailureOrOAuth.fold(
@@ -125,12 +125,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   ) async {
     /// Check if the user account was already exist
     final isUserAlreadyExist =
-        await ref.read(userProvider).isUserAlreadyExist();
+        await ref.read(authProvider).isUserAlreadyExist();
 
     isUserAlreadyExist.fold(
       (newFailure) {
         /// Clean the session if something happen here
-        ref.read(userProvider).cleanSession();
+        ref.read(authProvider).cleanSession();
 
         handleFailure(newFailure);
       },
@@ -163,7 +163,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         return UserExistDialog(
           onCancel: () {
             /// Clean the Session if user already exist
-            ref.read(userProvider).cleanSession();
+            ref.read(authProvider).cleanSession();
 
             /// Pop the dialog
             Navigator.pop(context);
@@ -186,7 +186,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     ref.read(userParamsProvider).setOAuthCredential(oAuthCredential);
 
     final eitherFailureOrUserCredential =
-        await ref.read(userProvider).registerToFirebase(
+        await ref.read(authProvider).registerToFirebase(
               oAuthCredential: oAuthCredential,
             );
 

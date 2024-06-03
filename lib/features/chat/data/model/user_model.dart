@@ -1,5 +1,5 @@
-import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/core/constant/constants.dart';
+import 'package:kizu/features/chat/business/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
   final String email;

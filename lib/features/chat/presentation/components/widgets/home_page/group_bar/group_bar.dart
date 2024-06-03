@@ -26,9 +26,9 @@ class GroupBar extends StatelessWidget {
                     Theme.of(context).colorScheme.onBackground.withOpacity(0.4),
               ),
         ),
-        children: [
+        children: const [
           // ...generateGroupItem(groupList),
-          const SizedBox(
+          SizedBox(
             height: 8,
           ),
         ],

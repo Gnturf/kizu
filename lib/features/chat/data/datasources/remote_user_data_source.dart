@@ -3,20 +3,23 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:kizu/core/errors/exception.dart';
-import 'package:kizu/features/auth/data/models/user_model.dart';
+import 'package:kizu/features/chat/business/entity/user_entity.dart';
 import 'package:http/http.dart' as http;
+import 'package:kizu/features/chat/data/model/user_model.dart';
 
 abstract class RemoteUserDataSource {
-  Future<UserModel> getUser(String idToken);
+  Future<UserEntity> fetchUser(String idToken);
 }
 
 class RemoteUserDataSourceImpl implements RemoteUserDataSource {
-  final String domain;
+  String domain;
 
-  RemoteUserDataSourceImpl({required this.domain});
+  RemoteUserDataSourceImpl({
+    required this.domain,
+  });
 
   @override
-  Future<UserModel> getUser(String idToken) async {
+  Future<UserEntity> fetchUser(String idToken) async {
     try {
       var uri = Uri.http('$domain:5000', '/user');
 

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kizu/features/chat/presentation/provider/user_provider.dart';
 
-class ProfileBar extends StatelessWidget {
-  final String displayName;
-  final String? statusMessage;
-
-  const ProfileBar({
-    super.key,
-    required this.displayName,
-    required this.statusMessage,
-  });
+class ProfileBar extends ConsumerWidget {
+  const ProfileBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider).user;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: Row(
@@ -30,14 +27,14 @@ class ProfileBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                displayName, // Profile Name
+                user?.displayName ?? "", // Profile Name
                 style: Theme.of(context).textTheme.displaySmall,
               ),
               const SizedBox(
                 height: 2,
               ),
               Text(
-                statusMessage ?? '-', // Profile Status
+                user?.statusMessage ?? "-", // Profile Status
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Theme.of(context)
                           .colorScheme

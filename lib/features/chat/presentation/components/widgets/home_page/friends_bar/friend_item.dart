@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:kizu/core/entity/user_entity.dart';
-import 'package:kizu/features/chat/presentation/components/widgets/profile_dialog/profile_dialog.dart';
 
 class FriendItem extends StatelessWidget {
-  final UserEntity contactData;
-
   const FriendItem({
     super.key,
-    required this.contactData,
+    required this.name,
+    required this.desc,
   });
+
+  final String name;
+  final String desc;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print(contactData.uid);
-        showDialog(
-          context: context,
-          builder: (context) {
-            return ProfileDialog(
-              user: contactData,
-            );
-          },
-        );
-      },
+      onTap: () {},
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
@@ -38,11 +28,11 @@ class FriendItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  contactData.displayName,
+                  name,
                   style: Theme.of(context).textTheme.titleMedium!,
                 ),
                 Text(
-                  contactData.statusMessage ?? "-",
+                  desc,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         color: Theme.of(context)
                             .colorScheme

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:kizu/core/errors/failure.dart';
-import 'package:kizu/features/auth/business/repository/user_repository.dart';
+import 'package:kizu/features/auth/business/repository/auth_repository.dart';
 
 class IsUserAlreadyExist {
-  AuthUserRepository repository;
+  AuthRepository repository;
 
   IsUserAlreadyExist({required this.repository});
 

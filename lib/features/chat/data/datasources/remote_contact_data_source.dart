@@ -3,20 +3,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:kizu/core/errors/exception.dart';
-import 'package:kizu/features/chat/data/model/contact_model.dart';
+import 'package:kizu/features/chat/business/entity/contact_entity.dart';
 import 'package:http/http.dart' as http;
+import 'package:kizu/features/chat/data/model/contact_model.dart';
 
 abstract class RemoteContactDataSource {
-  Future<List<ContactModel>> fetchAllContact(String idToken);
+  Future<List<ContactEntity>> fetchContact(String idToken);
 }
 
-class RemoteContactDataSourceImpl implements RemoteContactDataSource {
+class RemoteContractDataSourceImpl implements RemoteContactDataSource {
   final String domain;
 
-  RemoteContactDataSourceImpl({required this.domain});
+  RemoteContractDataSourceImpl({required this.domain});
 
   @override
-  Future<List<ContactModel>> fetchAllContact(String idToken) async {
+  Future<List<ContactEntity>> fetchContact(String idToken) async {
     try {
       var uri = Uri.http('$domain:5000', '/contacts');
 
@@ -28,18 +29,24 @@ class RemoteContactDataSourceImpl implements RemoteContactDataSource {
         },
       ).timeout(const Duration(seconds: 20));
 
-      final Map<String, dynamic> decodedBody = json.decode(response.body);
+      final Map<String, dynamic> decodedBody =
+          json.decode(response.body) as Map<String, dynamic>;
 
       if (response.statusCode == 400 || decodedBody["status"] == "failed") {
         throw ServerException(message: decodedBody["message"]);
       }
 
-      final data = decodedBody["data"] as List<dynamic>;
+      final decodeData = jsonDecode(response.body)["data"];
+      print('Decoded data: $decodeData');
 
-      final List<ContactModel> contactList =
-          data.map((contact) => ContactModel.fromJson(contact)).toList();
+      final List<ContactEntity> contacts = (decodeData as List)
+          .map(
+            (contact) => ContactModel.fromJson(contact),
+          )
+          .toList();
+      print(contacts.length);
 
-      return contactList;
+      return contacts;
     } on SocketException {
       throw ServerException(message: "No Internet connection.");
     } on TimeoutException {

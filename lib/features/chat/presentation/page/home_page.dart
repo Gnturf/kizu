@@ -1,19 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kizu/core/provider/user_provider.dart';
-import 'package:kizu/features/chat/presentation/components/widgets/home_page/profile_bar/profile_bar.dart';
+import 'package:kizu/core/provider/google_sign_in_provider.dart';
 import 'package:kizu/features/chat/presentation/components/widgets/home_page/friends_bar/friend_bar.dart';
 import 'package:kizu/features/chat/presentation/components/widgets/home_page/group_bar/group_bar.dart';
+import 'package:kizu/features/chat/presentation/components/widgets/home_page/profile_bar/profile_bar.dart';
 import 'package:kizu/features/chat/presentation/components/widgets/home_page/stories_bar/stories_bar.dart';
-import 'package:kizu/features/chat/presentation/providers/contact_provider.dart';
+import 'package:kizu/features/chat/presentation/provider/contact_provider.dart';
+import 'package:kizu/features/chat/presentation/provider/user_provider.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userData = ref.watch(userProvider).userEntity;
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -54,6 +54,22 @@ class HomePage extends ConsumerWidget {
                   height: 0,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  onTap: () async {
+                    final token =
+                        await FirebaseAuth.instance.currentUser!.getIdToken();
+
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: SelectableText(
+                            token ?? "",
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                        );
+                      },
+                    );
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -115,9 +131,12 @@ class HomePage extends ConsumerWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   onTap: () async {
-                    await ref.read(userProvider).signOut();
-                    ref.read(contactProvider).contactList = null;
-                    ref.read(userProvider).userEntity = null;
+                    ref.read(userProvider).cleanProvider();
+                    ref.read(contactProvider).cleanProvider();
+                    ref.read(userProvider).cleanCachedUser();
+
+                    await ref.read(googleSignInProvider).disconnect();
+                    await FirebaseAuth.instance.signOut();
                   },
                   child: Row(
                     children: [
@@ -148,10 +167,7 @@ class HomePage extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ProfileBar(
-                displayName: userData == null ? "" : userData.displayName,
-                statusMessage: userData?.statusMessage,
-              ),
+              const ProfileBar(),
               const StoriesBar(),
               Container(
                 height: 0.2,

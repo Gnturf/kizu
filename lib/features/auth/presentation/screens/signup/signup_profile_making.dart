@@ -7,7 +7,7 @@ import 'package:kizu/features/auth/presentation/components/icon_text_button.dart
 import 'package:kizu/features/auth/presentation/components/snackbar/custom_snack_bar.dart';
 import 'package:kizu/features/auth/presentation/provider/auth_mode_provider.dart';
 import 'package:kizu/features/auth/presentation/provider/user_params_provider.dart';
-import 'package:kizu/core/provider/user_provider.dart';
+import 'package:kizu/features/auth/presentation/provider/auth_provider.dart';
 
 class ProfileMakingScreen extends ConsumerStatefulWidget {
   const ProfileMakingScreen({
@@ -149,7 +149,7 @@ class _ProfileMakingScreenState extends ConsumerState<ProfileMakingScreen> {
 
                       /// Register user to firebase
                       final eitherFailureOrUserCredential =
-                          await ref.read(userProvider).registerToFirebase(
+                          await ref.read(authProvider).registerToFirebase(
                                 oAuthCredential: oAuthCredential,
                               );
 

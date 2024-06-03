@@ -9,8 +9,8 @@ class FriendsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
-          // TODO: Change here
-          "Friends 0",
+          // TODO: Change Here
+          "Friends ??",
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         leading: IconButton(
@@ -51,20 +51,21 @@ class FriendsScreen extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          // TODO: Uncomment here later
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: userContactsList.length,
-          //     itemBuilder: (context, index) {
-          //       final friend = userContactsList[index];
-
-          //       return FriendTile(
-          //         name: friend.displayName,
-          //         desc: friend.statusMessage,
-          //       );
-          //     },
-          //   ),
-          // ),
+          Expanded(
+            child: ListView.builder(
+              // TODO: Implement This
+              itemCount: 0,
+              itemBuilder: (context, index) {
+                return null;
+              
+                // TODO: Implement This
+                // return FriendTile(
+                //   name: friend.displayName,
+                //   desc: friend.statusMessage,
+                // );
+              },
+            ),
+          ),
         ],
       ),
     );

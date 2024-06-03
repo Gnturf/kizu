@@ -1,4 +1,15 @@
-class CacheException implements Exception {}
+class CacheException implements Exception {
+  final String? message;
+
+  CacheException({this.message});
+
+  @override
+  String toString() {
+    Object? message = this.message;
+    if (message == null) return "Exception";
+    return "Exception: $message";
+  }
+}
 
 class ServerException implements Exception {
   final String? message;

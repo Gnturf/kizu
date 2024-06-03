@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kizu/features/chat/presentation/components/constant/friend_bar_const.dart';
-import 'package:kizu/features/chat/presentation/providers/contact_provider.dart';
+import 'package:kizu/features/chat/presentation/components/helper/friend_bar_const.dart';
+import 'package:kizu/features/chat/presentation/provider/contact_provider.dart';
 
 class FriendBar extends ConsumerWidget {
   const FriendBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userContactList = ref.watch(contactProvider).contactList;
+    final contactList = ref.watch(contactProvider).contactList;
 
     return ListTileTheme(
       contentPadding: const EdgeInsets.all(0),
@@ -25,20 +25,20 @@ class FriendBar extends ConsumerWidget {
         tilePadding: const EdgeInsets.all(0),
         childrenPadding: const EdgeInsets.all(0),
         title: Text(
-          "Friends ${userContactList == null ? "null" : userContactList.length}",
+          // TODO: Implement This
+          "Friends ${contactList?.length ?? "-"}",
           style: Theme.of(context).textTheme.labelLarge!.copyWith(
                 color:
                     Theme.of(context).colorScheme.onBackground.withOpacity(0.4),
               ),
         ),
-        children: userContactList == null
-            ? []
-            : [
-                ...generateFriendItem(userContactList),
-                const SizedBox(
-                  height: 8,
-                ),
-              ],
+        children: [
+          // TODO: Implement This
+          ...generateFriendItem(contactList ?? []),
+          const SizedBox(
+            height: 8,
+          ),
+        ],
       ),
     );
   }

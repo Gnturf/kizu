@@ -1,23 +1,19 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kizu/core/datasource/local_user_data_source.dart';
 import 'package:kizu/core/errors/exception.dart';
 import 'package:kizu/core/errors/failure.dart';
 import 'package:kizu/core/params/user_params.dart';
-import 'package:kizu/core/entity/user_entity.dart';
 import 'package:kizu/features/auth/data/datasources/firebase_data_source.dart';
-import 'package:kizu/features/auth/business/repository/user_repository.dart';
+import 'package:kizu/features/auth/business/repository/auth_repository.dart';
 import 'package:kizu/features/auth/data/datasources/remote_data_source.dart';
-import 'package:kizu/features/auth/data/models/user_model.dart';
+import 'package:kizu/features/chat/data/model/user_model.dart';
 
-class AuthUserRepositoryImpl extends AuthUserRepository {
-  final FirebaseUserAuthDataSource firebaseDataSource;
-  final LocalUserDataSource userLocalDataSources;
-  final RemoteUserDataSource remoteDataSource;
+class AuthRepositoryImpl extends AuthRepository {
+  final FirebaseAuthDataSource firebaseDataSource;
+  final RemoteAuthDataSource remoteDataSource;
 
-  AuthUserRepositoryImpl({
+  AuthRepositoryImpl({
     required this.firebaseDataSource,
-    required this.userLocalDataSources,
     required this.remoteDataSource,
   });
 
@@ -81,7 +77,7 @@ class AuthUserRepositoryImpl extends AuthUserRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> registerToRemote({
+  Future<Either<Failure, void>> registerToRemote({
     required UserParams userParams,
   }) async {
     try {
@@ -130,20 +126,9 @@ class AuthUserRepositoryImpl extends AuthUserRepository {
 
       await remoteDataSource.registerToRemote(userModel, idToken);
 
-      return Right(userModel);
+      return const Right(null);
     } catch (e) {
       return Left(ServerFailure(errorMessage: e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> cachedUser(UserEntity userEntity) async {
-    try {
-      await userLocalDataSources.cachedUser(userEntity);
-
-      return const Right(null);
-    } on CacheException catch (e) {
-      return Left(CacheFailure(errorMessage: e.toString()));
     }
   }
 }

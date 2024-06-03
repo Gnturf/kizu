@@ -53,10 +53,12 @@ class ChatsPage extends StatelessWidget {
       body: SizedBox(
         width: MediaQuery.sizeOf(context).width,
         child: ListView.builder(
-          // TODO: Change here
+          // TODO: Implement This
           itemCount: 0,
           itemBuilder: (context, index) {
-            // TODO: Uncomment this later
+            return null;
+          
+            // TODO: Implement This
             // return ChatTile(
             //   name: userContactsList[index].displayName,
             //   lastChat: messageHistory.last.messageText,

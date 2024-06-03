@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:kizu/core/errors/exception.dart';
-import 'package:kizu/features/auth/data/models/user_model.dart';
+import 'package:kizu/features/chat/data/model/user_model.dart';
 import 'package:http/http.dart' as http;
 
-abstract class RemoteUserDataSource {
+abstract class RemoteAuthDataSource {
   Future<void> registerToRemote(UserModel userModel, String idToken);
   Future<bool> isUserExist(String email);
 }
 
-class RemoteDataSourceImpl implements RemoteUserDataSource {
+class RemoteDataSourceImpl implements RemoteAuthDataSource {
   final String domain;
 
   RemoteDataSourceImpl({required this.domain});

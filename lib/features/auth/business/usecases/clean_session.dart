@@ -1,7 +1,7 @@
-import 'package:kizu/features/auth/business/repository/user_repository.dart';
+import 'package:kizu/features/auth/business/repository/auth_repository.dart';
 
 class CleanSession {
-  AuthUserRepository repository;
+  AuthRepository repository;
 
   CleanSession({required this.repository});
 

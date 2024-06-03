@@ -2,7 +2,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kizu/core/errors/exception.dart';
 
-abstract class FirebaseUserAuthDataSource {
+abstract class FirebaseAuthDataSource {
   Future<OAuthCredential> createOAuthCredential();
   Future<UserCredential> registerOrSignInToFirebase({
     required OAuthCredential oAuthCredential,
@@ -11,7 +11,7 @@ abstract class FirebaseUserAuthDataSource {
   String getUserEmail();
 }
 
-class FirebaseDataSourceImpl implements FirebaseUserAuthDataSource {
+class FirebaseDataSourceImpl implements FirebaseAuthDataSource {
   final GoogleSignIn googleSignIn;
 
   FirebaseDataSourceImpl({required this.googleSignIn});

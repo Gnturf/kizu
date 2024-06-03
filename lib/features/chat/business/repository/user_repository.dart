@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:kizu/core/errors/failure.dart';
-import 'package:kizu/core/entity/user_entity.dart';
+import 'package:kizu/features/chat/business/entity/user_entity.dart';
 
-abstract class ChatUserRepository {
-  Future<Either<Failure, void>> cachedUser(UserEntity userEntity);
+abstract class UserRepository {
   Future<Either<Failure, UserEntity>> fetchUser();
-  Future<Either<Failure, void>> signOut();
+  Future<Either<Failure, void>> cacheUser(UserEntity user);
+  Future<void> cleanCachedUser();
 }

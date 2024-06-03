@@ -1,4 +1,3 @@
-// import 'package:flutter_nodejs_socketio/data/dummy_data/user_data.dart';
 // import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 // class WebsocketConn {
@@ -17,7 +16,5 @@
 //     });
 
 //     socket.connect();
-//     socket.emit("test", userData.id);
-//     print(socket.connected);
 //   }
 // }
